@@ -1,0 +1,66 @@
+.quizContainer {
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.questionBlock {
+  margin-bottom: 2rem;
+}
+
+.question {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.choices {
+  list-style-type: none;
+  padding: 0;
+}
+
+.choice {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.choice:hover {
+  background-color: #f0f0f0;
+}
+
+.selected {
+  background-color: #e0f7fa;
+}
+
+.correct {
+  background-color: #d4edda;
+  border-color: #28a745;
+}
+
+.incorrect {
+  background-color: #f8d7da;
+  border-color: #dc3545;
+}
+
+.submitButton {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+.score {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
