@@ -9,16 +9,14 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'AWS Observability in Grafana Cloud',
-  tagline: 'Observability is cool',
+  tagline: 'Observability is fun',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
   url: 'https://grafana.github.io/',
-  // url: 'https://grafana.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
-  // baseUrl: '/aws-workshop/',
+  baseUrl: '/aws-workshop/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
