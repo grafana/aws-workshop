@@ -36,11 +36,9 @@ Your logon has been sent to the email address you provided when you signed up. I
 
 In this workshop, you'll get hands-on with AWS Observability in Grafana Cloud, including:
 
-- Understanding how to connect your services to Grafana Cloud
+- Understanding how to use the AWS observability solutions in Grafana Cloud
 
-- Diagnosing and troubleshooting problems in your cloud infrastructure
-
-- Quizzes at the end of each lab
+- Diagnosing and troubleshooting problems in your AWS infrastructure
 
 - Hands-on steps for you to perform in Grafana Cloud
 

@@ -1,7 +1,7 @@
 ---
 ---
 
-# 3.1. Building a service health dashboard
+# 2.2. Building a service health dashboard
 
 In this lab, you will bring together everything that you've learned so far, by creating a custom dashboard in Grafana Cloud.
 
@@ -12,6 +12,8 @@ We will use all of the metrics, logs, and traces that we have collected from our
 - RDS fatal errors
 
 - SLO burndown alerts, allowing us to correlate events in our infrastructure with SLO breaches
+
+- Tickets purchased in the last hour (via Postgres database)
 
 We'll follow dashboard design best practices, using **RED** metrics (Rate, Errors, Duration) to monitor our services, and adding context from our logs and traces to build an overall picture of the health of our applications.
 
@@ -42,7 +44,7 @@ Let's add the Service Map, since it gives a high-level overview of the services 
 
 ## Step 3: Show high-level trace metrics
 
-1.  Navigate to Drilldown -> Traces.
+1.  Navigate to **Drilldown -> Traces**.
 
 1.  Click on the **Errors rate** panel to show the trace metrics.
 
@@ -53,7 +55,7 @@ Let's add the Service Map, since it gives a high-level overview of the services 
 
 Now that we have the Service Map and trace metrics, let's add some Lambda execution metrics to our dashboard.
 
-1.  Navigate to Cloud Provider -> AWS -> Lambda.
+1.  Navigate to **Cloud Provider -> AWS -> Lambda**.
 
 1.  Find the **Errors** panel and click on the **Explore** button in the top right corner.
 
@@ -63,7 +65,9 @@ Now that we have the Service Map and trace metrics, let's add some Lambda execut
 
 We will also add SQS metrics to our dashboard, since our requester and recorder services are using SQS to communicate with each other.
 
-1.  Navigate to Cloud Provider -> AWS -> SQS.
+Let's add the total number of SQS messages. This could give us a clue whether messages are sitting unacknowledged, or whether there is some other issue:
+
+1.  Navigate to **Cloud Provider -> AWS -> SQS**.
 
 1.  Find the **Messages** panel and click on the **Explore** button in the top right corner.
 
@@ -72,11 +76,17 @@ We will also add SQS metrics to our dashboard, since our requester and recorder 
 1.  Edit the panel, and give it the title **SQS Messages**.
 
 
-## Step 5: Add RDS fatal errors
+## Step 5: Show RDS fatal errors on a graph
 
-In Lab 1, we saw how a pile-up of errors in our mythical-beasts-server service was causing the SLO to breach. We saw that the root cause was that the RDS instance was overloaded with connections. This was causing the mythical-beasts-server-service to be degraded.
+In the previous hands-on lab, we saw how a pile-up of errors in our mythical-beasts-server service was causing the SLO to breach. We saw that the root cause was that the RDS instance was overloaded with connections, causing the mythical-beasts-server-service to be degraded.
 
-To help us monitor this, we will create a panel that shows the number of fatal errors logged by our RDS instance:
+To help us monitor this situation and prevent it from happening in future, we will create a graph that shows the number of fatal errors logged by our RDS instance, over time.
+
+:::tip
+
+When you want to quickly understand trends in your logs, you can use a metric query in Loki. Metric queries allow you to parse logs and turn them into a time series, helping you to instantly visualize what's going on.
+
+:::
 
 1.  Add a new panel to your dashboard by clicking on the **Add panel** button.
 
@@ -88,15 +98,13 @@ To help us monitor this, we will create a panel that shows the number of fatal e
       - Color scheme: **Single color** and select a color of your choice (**red** is a good choice for errors).
     - Data source: Loki
 
-    Use the following query to show the RDS metrics for the mythical-beasts-database:
+1.  In the query box, use the following query to count the FATAL errors in the tickets-database:
 
     ```
-    sum by(service_name) (count_over_time({service_name="mythical-beasts-database"} |= `FATAL` [$__auto]))
+    sum by(service_name) (count_over_time({service_name="tickets-database"} |= `FATAL` [$__auto]))
     ```
 
-    
-
-## Step 6: Add annotations
+## Step 6: Add SLO event annotations
 
 Annotations are a great way to add context to your dashboards. Annotations let you mark specific points in time on your graphs, which can help shine a light on events that may have affected your services, or indeed if your services have affected anything else.
 
@@ -148,6 +156,8 @@ If you're feeling adventurous, you can try some of the following bonus tasks to 
     - add a panel to show the number of connections to the RDS instance
 
     - add a panel to show the number of queries per second
+
+    - add a panel to show number of bookings (in the database) in the given time range
 
 - **Create a second dashboard which shows infrastructure metrics.** You can create a second dashboard that shows infrastructure metrics, such as CPU and memory usage, disk space usage, and network traffic. This can help you monitor the health of your infrastructure and identify potential issues. You might like to add:
 

@@ -1,7 +1,7 @@
 ---
 ---
 
-# 2.1. The Case of the Oversized Instance 🕵️
+# 3.1. The Case of the Oversized Instance 🕵️
 
 import Question from '@site/src/components/Question';
 
@@ -117,5 +117,6 @@ In this lab, you learned how to:
 
 - Understand the importance of cost management in cloud environments
 
-In the next lab, you'll use everything you've learned so far to build your own custom dashboards to visualize and monitor your infrastructure and applications in Grafana Cloud.
+And that brings us to the end of this workshop! Thanks for attending.
 
+To get started with Grafana Cloud and take advantage of all of these features for observing your AWS applications, [sign up for our (actually useful) free forever plan now](https://grafana.com/auth/sign-up/create-user).

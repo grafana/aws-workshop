@@ -80,7 +80,10 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/grafana/aws-workshop/tree/main/site/',
-          admonitions: {}
+          admonitions: {
+            keywords: ['opentelemetry-tip'],
+            extendDefaults: true,
+          }
         },
         blog: false, // Optional: disable the blog plugin
         theme: {
@@ -114,20 +117,7 @@ const config = {
         links: [
           {
             title: 'Community',
-            items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
-              },
-            ],
+            items: [],
           },
           {
             title: 'More',
