@@ -89,7 +89,7 @@ Now that we have the Service Map and trace metrics, let's add some Lambda execut
 
 1.  Navigate to **Cloud Provider -> AWS -> Lambda**.
 
-1.  In the dropdown variables at the top, by **Function name**, select **tickets-recorder-<id>** where ID is your workshop's ID (usually contained in your current Grafana URL).
+1.  In the dropdown variables at the top, by **Function name**, select **tickets-recorder-xxxx** where "xxxx" is your workshop's ID (usually contained in your current Grafana URL).
 
 1.  Find the **Errors** panel and click on the **Explore** button in the top right corner.
 

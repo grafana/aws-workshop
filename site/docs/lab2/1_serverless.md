@@ -169,7 +169,7 @@ We have configured a Firehose delivery stream to ship RDS logs to Grafana Cloud,
 
     The Logs tab shows us all of the CloudWatch log groups that we're pulling in to our Grafana Cloud account.
 
-1.  Ensure that the datasource selected is **grafanacloud-<id>-logs** at the top right of the Logs view.
+1.  Ensure that the datasource selected is **grafanacloud-xxxx-logs** at the top right of the Logs view.
 
 1.  Click on the log group **/aws/rds/instance/tickets-database/postgresql**
 
