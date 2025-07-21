@@ -114,9 +114,9 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     By **Group By**, click on **aws.ecs.task.family** to see traces grouped by ECS Fargate task.
 
-1.  By **mythical-beasts-server**, click on Add to filters.
+1.  By **tickets-server**, click on Add to filters.
 
-    This will filter the traces to only show those where the trace began in the mythical-beasts-server service.
+    This will filter the traces to only show those where the trace began in the tickets-server service.
 
     Now we're zooming in to the problem.
 
@@ -145,9 +145,9 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     Notice that OpenTelemetry also provides rich contextual data about this database interaction:
 
-    - db.connection_string: `postgresql://mythical-beasts-database.cfcmk82ycrhh.us-east-1.rds.amazonaws.com:5432/postgres`
+    - db.connection_string: `postgresql://tickets-database.cfcmk82ycrhh.us-east-1.rds.amazonaws.com:5432/postgres`
     - db.system: `postgres`
-    - net.peer.name: `mythical-beasts-database.cfcmk82ycrhh.us-east-1.rds.amazonaws.com`
+    - net.peer.name: `tickets-database.cfcmk82ycrhh.us-east-1.rds.amazonaws.com`
 
     This kind of rich contextual information comes from adding OpenTelemetry instrumentation to your applications.
 

@@ -78,7 +78,7 @@ Let's add the total number of SQS messages. This could give us a clue whether me
 
 ## Step 5: Show RDS fatal errors on a graph
 
-In the previous hands-on lab, we saw how a pile-up of errors in our mythical-beasts-server service was causing the SLO to breach. We saw that the root cause was that the RDS instance was overloaded with connections, causing the mythical-beasts-server-service to be degraded.
+In the previous hands-on lab, we saw how a pile-up of errors in our tickets-server service was causing the SLO to breach. We saw that the root cause was that the RDS instance was overloaded with connections, causing the tickets-server-service to be degraded.
 
 To help us monitor this situation and prevent it from happening in future, we will create a graph that shows the number of fatal errors logged by our RDS instance, over time.
 
@@ -122,7 +122,7 @@ In this case, we'll use annotations to show when our SLO began to breach, and co
 1.  In the **Query** box, use the query to search for SLO burndown events:
 
     ```
-    {group="mythical-server-success-rate (Grafana SLO 0bnhaq0zsvy4ih3fven5u)"} | json
+    {group=~"tickets-success-rate.*"} | json
     ```
     
 1.  Finally, set the following options:

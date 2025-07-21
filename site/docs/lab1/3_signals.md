@@ -64,7 +64,7 @@ Let's use Drilldown Logs to explore these logs.
 
 1.  Navigate to **Drilldown** and then choose **Logs**.
 
-1.  Click on **mythical-beasts-requester** -> **Show Logs** to show logs from the mythical beasts requester service.
+1.  Click on **tickets-requester** -> **Show Logs** to show logs from the tickets-requester service.
 
 1.  In the **Search in log lines** box, enter `error`
 
@@ -139,7 +139,7 @@ To perform side-by-side correlations, we can use the **Explore** view in Grafana
 2. Select the **Loki** data source, then enter the following query:
 
     ```
-    {service_name="mythical-beasts-requester"}
+    {service_name="tickets-requester"}
     ```
 
 3.  Click to expand a log line, then click on the button by the side of the *traceID* field, to open the trace browser.
