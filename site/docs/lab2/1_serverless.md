@@ -21,13 +21,14 @@ A Service Level Objective (SLO) defines a specific, measurable target, which rep
 
 :::
 
-1.  From the side menu, navigate to **Alerts & IRM -> SLO** to show the Grafana SLO dashboard.
+1.  From the side menu, navigate to **Alerts & IRM -> SLO -> SLO performance** to show the Grafana SLO performance dashboard.
 
-    This dashboard shows our services which currently have an SLO defined. There is **one** SLO configured.
+    This dashboard shows the performance of our Service-Level Objectives. There is **one** SLO configured.
 
 1.  Click on the **tickets-server-success-rate** service to show the SLO dashboard.
 
     - This dashboard shows us the performance of our ticket booking service, against our target.
+    - We have set a service-level objective that 99% of requests to our ticket booking service should be handled successfully.
     - Our SLO is based on the success rate of customer booking requests, so it's something that has real customer impact.
     - When requests begin to fail, it will be highlighted on this dashboard, and an alert will fire.
 
@@ -37,10 +38,9 @@ A Service Level Objective (SLO) defines a specific, measurable target, which rep
 
 1.  Grafana SLO allows us to see a breakdown of the worst-performing instances, groups or endpoints of our service.
 
-    Using the variable dropdowns at the top, try exploring how the SLO dashboard looks, broken down by **region** or **endpoint**.
+    Using the variable dropdowns at the top, try exploring how the SLO dashboard looks, broken down by **region** or **span name** (endpoint).
 
     For example, we might choose to break down our SLO by region, or by namespace, or by any other label that we have defined in our application's instrumentation.
-
 
 1.  Scroll down to the graphs section. We can see that the Service Level Indicator (SLI) has dropped for all services.
 
@@ -169,8 +169,9 @@ We have configured a Firehose delivery stream to ship RDS logs to Grafana Cloud,
 
     The Logs tab shows us all of the CloudWatch log groups that we're pulling in to our Grafana Cloud account.
 
-1.  Click on the log group **/aws/rds/instance/tickets-database/postgresql**
+1.  Ensure that the datasource selected is **grafanacloud-<id>-logs** at the top right of the Logs view.
 
+1.  Click on the log group **/aws/rds/instance/tickets-database/postgresql**
 
     Notice how we see a lot of FATAL and PANIC error messages:
 
