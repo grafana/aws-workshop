@@ -17,6 +17,10 @@ We will use all of the metrics, logs, and traces that we have collected from our
 
 We'll follow dashboard design best practices, using **RED** metrics (Rate, Errors, Duration) to monitor our services, and adding context from our logs and traces to build an overall picture of the health of our applications.
 
+The dashboard we will create will look something like this:
+
+    ![Completed dashboard](./img/dashboard_finished.png)
+
 ## Step 1: Create a new dashboard
 
 1.  Click on **New -> Dashboard**.
@@ -178,7 +182,40 @@ In this case, we'll use annotations to mark when our SLO began to breach, and co
 
     :::
 
-## Step 7: Bonus tasks!
+## Step 7: Add a logs panel
+
+Finally, let's add a logs panel from all of our services, so we can see the latest entries.
+
+1.  Click **Add -> Visualization**.
+
+1.  Choose the **Logs** visualization type.
+
+1.  In the data source query tab, set the data source to **grafanacloud-xxxx-logs** (Loki) and enter this query:
+
+    ```
+    {service_name="tickets-server"}
+    ```
+
+## Step 8: Add a database records stat
+
+Since we have access to our database instance here, let's also show a stat of the number of orders being held in the bookings database.
+
+1.  Click **Add -> Visualization**.
+
+1.  Choose the **Stat** type.
+
+1.  In the data source query tab, set the data source to **tickets-db** and enter this query:
+
+    ```
+    select count(*) from booking;
+    ```
+
+1.  Edit the following panel settings:
+
+    - Standard options -> Display name: **orders in database**
+    - Standard options -> Color scheme: **single color**, then choose **orange**
+
+## Step 9: Bonus tasks!
 
 The dashboard you have created is a good starting point, but you can customize it further to suit your needs. 
 
@@ -199,7 +236,6 @@ If you're feeling adventurous, you can try some of the following bonus tasks to 
 - **Create a second dashboard which shows infrastructure metrics.** You can create a second dashboard that shows infrastructure metrics, such as CPU and memory usage, disk space usage, and network traffic. This can help you monitor the health of your infrastructure and identify potential issues. You might like to add:
 
     - EC2 instance CPU utilization
-
 
 
 ## Wrapping up
