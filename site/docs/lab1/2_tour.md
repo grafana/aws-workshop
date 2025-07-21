@@ -134,7 +134,7 @@ Let's test this out by connecting to our application's RDS database.
 1.  Switch to **Code** view, then type the following SQL statement:
 
     ```
-    SELECT * FROM orders;
+    SELECT COUNT(*) FROM booking;
     ```
 
 1.  We have a successful connection to our database! We can now use this to correlate real data in Grafana.
