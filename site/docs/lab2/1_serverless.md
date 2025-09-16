@@ -129,15 +129,13 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     Expand trace sections to see the full request flow:
 
-       Requester -> request handler -> pg-query.INSERT postgres
+       tickets-server -> request handler -> pg-pool.connect -> pg.connect
 
     ![image](./img/drilldowntraces_error_trace.png)
     
 1.  Notice how the span is indicated with an error icon, and the error message is shown in the span's **Status Message**.
 
-    > Query read timeout  
-    > Connection terminated unexpectedly  
-    > Connection terminated due to connection timeout
+    > remaining connection slots are reserved for non-replication superuser and rds_reserved connections
 
     This is a clue that the problem might be with the database connection, which is causing the service to fail.
 
@@ -145,9 +143,9 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     Notice that OpenTelemetry also provides rich contextual data about this database interaction:
 
-    - db.connection_string: `postgresql://tickets-database.cfcmk82ycrhh.us-east-1.rds.amazonaws.com:5432/postgres`
+    - db.connection_string: `"postgresql://tickets-database-fefd55.cfcmk82ycrhh.us-east-1.rds.amazonaws.com:5432/ticketsdb"`
     - db.system: `postgres`
-    - net.peer.name: `tickets-database.cfcmk82ycrhh.us-east-1.rds.amazonaws.com`
+    - net.peer.name: `tickets-database-fefd55.cfcmk82ycrhh.us-east-1.rds.amazonaws.com`
 
     This kind of rich contextual information comes from adding OpenTelemetry instrumentation to your applications.
 
