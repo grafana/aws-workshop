@@ -73,7 +73,7 @@ Let's use Grafana Cloud Application Observability to get the current health of o
 
     This shows us an aggregate view of all instances of our service, across all regions or availability zones.
 
-    - Notice first how the typical duration of each request has **shot up** to 10 seconds.
+    - Notice first how the typical duration of each request has **shot up** to 4 seconds.
 
     - Look at the Operations panel, which shows us the operations being invoked on this service's API. 
 
@@ -143,7 +143,7 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     Notice that OpenTelemetry also provides rich contextual data about this database interaction:
 
-    - db.connection_string: `"postgresql://tickets-database-fefd55.cfcmk82ycrhh.us-east-1.rds.amazonaws.com:5432/ticketsdb"`
+    - db.connection_string: `postgresql://tickets-database-fefd55.cfcmk82ycrhh.us-east-1.rds.amazonaws.com:5432/ticketsdb`
     - db.system: `postgres`
     - net.peer.name: `tickets-database-fefd55.cfcmk82ycrhh.us-east-1.rds.amazonaws.com`
 
