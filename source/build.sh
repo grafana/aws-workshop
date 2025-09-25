@@ -4,11 +4,10 @@ set -euo pipefail
 
 aws ecr get-login-password --region us-east-1 | podman login --username AWS --password-stdin 008971678742.dkr.ecr.us-east-1.amazonaws.com
 
-podman build --build-arg SERVICE=mythical-beasts-requester -f ./docker/Dockerfile -t 008971678742.dkr.ecr.us-east-1.amazonaws.com/mythical/mythical-requester .
-podman build --build-arg SERVICE=mythical-beasts-server -f ./docker/Dockerfile -t 008971678742.dkr.ecr.us-east-1.amazonaws.com/mythical/mythical-server .
+podman build --build-arg SERVICE=tickets-requester -f ./docker/Dockerfile -t 008971678742.dkr.ecr.us-east-1.amazonaws.com/aws-workshop/tickets-requester .
+podman build --build-arg SERVICE=tickets-server -f ./docker/Dockerfile -t 008971678742.dkr.ecr.us-east-1.amazonaws.com/aws-workshop/tickets-server .
+podman build -t 008971678742.dkr.ecr.us-east-1.amazonaws.com/aws-workshop/tickets-load-tester tickets-load-tester/
 
-podman build -t 008971678742.dkr.ecr.us-east-1.amazonaws.com/mythical/mythical-load-tester mythical-load-tester/
-
-podman push 008971678742.dkr.ecr.us-east-1.amazonaws.com/mythical/mythical-requester
-podman push 008971678742.dkr.ecr.us-east-1.amazonaws.com/mythical/mythical-server
-podman push 008971678742.dkr.ecr.us-east-1.amazonaws.com/mythical/mythical-load-tester
+podman push 008971678742.dkr.ecr.us-east-1.amazonaws.com/aws-workshop/tickets-requester
+podman push 008971678742.dkr.ecr.us-east-1.amazonaws.com/aws-workshop/tickets-server
+podman push 008971678742.dkr.ecr.us-east-1.amazonaws.com/aws-workshop/tickets-load-tester

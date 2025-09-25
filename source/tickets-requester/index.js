@@ -142,11 +142,19 @@ const makeRequest = async (tracingObj, logEntry) => {
         // Add the headers required for trace propagation
         headers = propagator(requestSpan);
 
+        const sqsSamplingPercentage = 10;
+        const shouldSendSQS = Math.random() * 100 < sqsSamplingPercentage; 
+        
+
         if (type === 'GET') {
             let names;
             try {
                 const result = await axios.get(`http://${serverHostPort}/${endpoint}`, { headers });
-                await sendSQSMessage(`GET /${endpoint}`, tracingObj);
+
+                if (shouldSendSQS) {
+                    await sendSQSMessage(`GET /${endpoint}`, tracingObj);
+                }
+
                 logEntry({
                     level: 'info',
                     namespace: process.env.NAMESPACE,
@@ -165,7 +173,11 @@ const makeRequest = async (tracingObj, logEntry) => {
                             data: { name: names[0].name },
                             headers: headers
                         });
-                        await sendSQSMessage(`DELETE /${endpoint} ${names[0].name}`, tracingObj);
+
+                        if (shouldSendSQS) {
+                            await sendSQSMessage(`DELETE /${endpoint} ${names[0].name}`, tracingObj);
+                        }
+
                         logEntry({
                             level: 'info',
                             namespace: process.env.NAMESPACE,
@@ -194,7 +206,11 @@ const makeRequest = async (tracingObj, logEntry) => {
             const body = { name : randomName };
             try {
                 await axios.post(`http://${serverHostPort}/${endpoint}`, body, { headers });
-                await sendSQSMessage(`POST /${endpoint} ${JSON.stringify(body)}`, tracingObj);
+
+                if (shouldSendSQS) {
+                    await sendSQSMessage(`POST /${endpoint} ${JSON.stringify(body)}`, tracingObj);
+                }
+
                 logEntry({
                     level: 'info',
                     namespace: process.env.NAMESPACE,

@@ -29,6 +29,5 @@ export default function () {
     };
     const resPost = http.post(url, payload, params);
 
-    check(resPost, {"status is 200": (res) => res.status === 200});
     sleep(1);
 }

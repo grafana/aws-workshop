@@ -1,32 +1,32 @@
 {
-  "name": "httprequester",
+  "name": "prometheus-server",
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node  index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.831.0",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.58.0",
     "@opentelemetry/core": "^2.0.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.200.0",
     "@opentelemetry/instrumentation": "^0.200.0",
-    "@opentelemetry/resource-detector-aws": "^2.1.0",
+    "@opentelemetry/instrumentation-aws-sdk": "^0.54.0",
     "@opentelemetry/resources": "^2.0.0",
     "@opentelemetry/sdk-trace-base": "^2.0.0",
     "@opentelemetry/sdk-trace-node": "^2.0.0",
     "@opentelemetry/semantic-conventions": "^1.32.0",
     "@pyroscope/nodejs": "^0.4.5",
-    "amqplib": "^0.10.5",
     "axios": "^1.8.3",
+    "body-parser": "^2.2.0",
     "express": "^5.1.0",
-    "package.json": "^2.0.1",
+    "influx": "^5.10.0",
+    "pg": "^8.14.0",
     "prom-client": "github:voltbit/prom-client#add-openmetrics-support",
-    "unique-names-generator": "^4.7.1"
+    "random": "^5.3.0"
   }
 }

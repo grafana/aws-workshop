@@ -1,3 +1,14 @@
+const { registerInstrumentations } = require('@opentelemetry/instrumentation');
+const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
+
+// Register instrumentations, before doing anything else
+registerInstrumentations({
+  instrumentations: [
+    getNodeAutoInstrumentations(),
+    // new AwsInstrumentation() // For instrumenting AWS SDK calls (e.g., SQS)
+  ],
+});
+
 // This is shared between the requester, the recorder and the server
 // As such, to only do what's needed, we init using a
 // function and then pass the service context to
@@ -11,8 +22,6 @@ module.exports = (context, serviceName) => {
   const { defaultResource, detectResources, resourceFromAttributes, envDetector, processDetector, osDetector } = require('@opentelemetry/resources');
   const { awsEcsDetector } = require('@opentelemetry/resource-detector-aws');
   const { ATTR_SERVICE_NAME } = require('@opentelemetry/semantic-conventions');
-  const { registerInstrumentations } = require('@opentelemetry/instrumentation');
-  const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
 
   return async () => {
     console.log('OTEL Environment Variables:');
@@ -68,10 +77,6 @@ module.exports = (context, serviceName) => {
         return carrier;
       };
     }
-
-    registerInstrumentations({
-      instrumentations: [getNodeAutoInstrumentations()],
-    });
 
     // Return instances of the API and the tracer to the calling app
     return {

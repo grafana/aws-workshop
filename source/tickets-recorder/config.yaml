@@ -1,0 +1,29 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "localhost:4317"
+      http:
+        endpoint: "localhost:4318"
+
+exporters:
+# Uncomment the following lines to enable debug exporter
+#  debug:
+#    verbosity: detailed
+
+  otlphttp/grafana:
+    endpoint: ${env:GRAFANA_CLOUD_OTLP_ENDPOINT} # e.g. "https://otlp-gateway-prod-us-east-2.grafana.net/otlp"
+    headers:
+      Authorization: ${env:GRAFANA_CLOUD_OTLP_AUTH_HEADER} # e.g. "Basic MTI1OD...9PQ=="
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [otlphttp/grafana] # [otlphttp/grafana,debug]
+    metrics:
+      receivers: [otlp]
+      exporters: [otlphttp/grafana] # [otlphttp/grafana,debug]
+    logs:
+      receivers: [otlp]
+      exporters: [otlphttp/grafana] # [otlphttp/grafana,debug]
