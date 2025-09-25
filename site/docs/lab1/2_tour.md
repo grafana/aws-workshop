@@ -54,25 +54,35 @@ Let's take a look at our applications in this environment:
 
 The Grafana Cloud **AWS Observability app** provides a comprehensive view of your AWS infrastructure, including resources like EC2 and RDS instances.
 
-1.  Click on **Observability -> Cloud provider**.
+First we'll take a look at how it's configured, then we will look at the built-in dashboards and alerts.
 
-1.  Click on **Configuration -> Scrape jobs**.
+1.  Click on **Observability -> Cloud provider -> AWS**.
 
-    - We've already created a scrape job for you
+1.  Click on **Configuration -> CloudWatch metrics scrape**.
+
+    - We've already created a scrape job for you. Click on it to see how it's configured.
 
     - The scrape job fetches CloudWatch metrics from AWS and brings them into your Grafana instance.
 
-1.  Since we are bringing CloudWatch metrics into Grafana, click on the Alerts tab to see some prepopulated alerts, which will help you understand when things are going wrong in your infrastructure. Grafana automatically creates these for you when you set up the AWS integration.
+1.  Return back to the Cloud Provider -> AWS screen. Click on **AWS/RDS** to show the RDS dashboard.
 
-1.  Click on the **Dashboards** tab to see out-of-the-box dashboards with metrics and information from your AWS services.
+    - Scroll down to see the database instances in this AWS Account, CPU utilization and other statistics. 
 
-You can use this app to monitor many different core AWS services, like EC2, Lambda and RDS.
+    - Click on a database instance to see its metrics.
 
-:::tip
+1.  Finally, return back to the Cloud Provider -> AWS screen, and click on the **Alerts** tab. These pre-installed, opinionated alerts help you understand when things are going wrong in your infrastructure. 
 
-For any services which you're unable to instrument directly with OpenTelemetry, you can use the CloudWatch data source to bring in metrics and logs. This means you can correlate across services and boundaries, across almost any AWS service.
+    :::note
 
-Learn more about the CloudWatch data source.
+    You can optionally install these alerts when you configure the AWS integration. In this environment, we have installed the alerts for you.
+
+    :::
+
+You can use the Cloud Provider Observability app in Grafana Cloud to monitor all your core AWS services, like EC2, Lambda and RDS.
+
+:::aws-tip[AWS Integration vs. Direct Query]
+
+The AWS integration (what we're using here) pulls your CloudWatch metrics into Grafana Cloud, giving you faster queries, pre-built dashboards, and the full AWS Observability app experience. Alternatively, you can use the [CloudWatch data source](https://grafana.com/docs/grafana/latest/datasources/aws-cloudwatch/) to query CloudWatch directly - this keeps your data in AWS but you'll miss out on the full AWS Observability app experience.
 
 :::
 
@@ -80,17 +90,19 @@ Learn more about the CloudWatch data source.
 
 Underneath Grafana Cloud, all of your telemetry data is stored in our open source telemetry backends. Whenever you want to explore signals directly, you can use the Drilldown apps.
 
-1.  **Let's explore some telemetry signals!** We've already configured some of our applications to send traces to Grafana Cloud.
+So let's explore some telemetry signals! We've already configured some of our applications to send **traces** to Grafana Cloud.
 
-    Navigate to **Drilldown** from the side menu, then click on **Traces**.
+1.  Navigate to **Drilldown** from the side menu, then click on **Traces**.
 
-1.  Drilldown Traces provides a powerful way to view and analyze traces collected, allowing you to see the flow of requests through your application, and how they are affected by different services along the way.
+    :::opentelemetry-tip
+    Drilldown Traces provides a powerful way to view and analyze distributed traces. We collect these with **OpenTelemetry** instrumentation. This allows us to see the flow of requests through our application, and how they are affected by different services along the way.
+    :::
 
-1.  The default view shows the rate of all traces, labelled as the **span rate**. Click on the **Errors rate** panel at the top to switch the view to show spans with errors.
+1.  The default view shows the rate of all traces, labelled as the **span rate**. Click on the **Errors rate** panel (_"errors/s"_) at the top to switch the view to show spans with errors.
 
-    Now the view shows spans that have errors, which can help you identify issues in your application.
+    If your application has any errored spans, they will be shown here. This can help you instantly identify issues in your application.
 
-1.  Click on the **duration** panel to switch the view to showing a histogram of span durations.
+1.  Click on the **duration** panel to switch the view to show a histogram of span durations.
 
     This view allows you to see typical durations of all of the requests flowing through your system. You can use this to:
     
@@ -99,11 +111,19 @@ Underneath Grafana Cloud, all of your telemetry data is stored in our open sourc
 
 1.  This view is showing all of our instrumented services. Let's zoom in a little and just find all **ECS** services.
 
-    Using the filter panel at the top of the page, add a filter:
+    Using the filter panel (_"Filter by label values"_) at the top of the page, add a filter:
 
     **resource.cloud.platform** = **aws_ecs**
 
-    Now we can see only traces from our AWS ECS tasks.
+    Now we can see only traces from our AWS ECS tasks: tickets-requester, and tickets-server.
+
+:::aws-tip
+
+If you've used AWS X-Ray before, this might feel familiar! We can see request flows across services, allowing us to observe a single request as it touches multiple AWS services. The key difference in this setup is that we're storing traces in Grafana Cloud Traces. This allows you to correlate traces across your hybrid and multi-cloud environments, and seamlessly correlate with your metrics and logs.
+
+If you want to query your X-Ray traces in Grafana directly, you can also do that using the [AWS Application Signals data source](https://grafana.com/grafana/plugins/grafana-x-ray-datasource/).
+
+:::
 
 
 
@@ -121,13 +141,13 @@ Let's test this out by connecting to our application's RDS database.
 
     :::info
 
-    We have already configured Private Data Source Connect for you here, but if you want t configure it in your own environment, you can read more about it here:
+    We have already configured Private Data Source Connect for you here, but if you want to configure it in your own environment, you can read more about it here:
     
     https://grafana.com/docs/grafana-cloud/connect-externally-hosted/private-data-source-connect/ 
 
     :::
 
-1.  Now let's run a database query. From the top of the data source edit page, click on the **Explore data** button. 
+1.  Now let's run a database query on our RDS database instance. From the top of the data source edit page, click on the **Explore data** button. 
 
     OR, from the side menu navigate to **Explore** and then select the **tickets-db** data source.
 
@@ -137,7 +157,7 @@ Let's test this out by connecting to our application's RDS database.
     SELECT COUNT(*) FROM booking;
     ```
 
-1.  We have a successful connection to our database! We can now use this to correlate real data in Grafana.
+1.  We have a successful connection to our RDS instance! We can now use this to correlate real data in Grafana.
 
 
 ## Wrapping Up
@@ -148,6 +168,6 @@ In this lab, you learned how to:
 
 - Understand Application Observability 
 
-- Understand how to connect your data, wherever it lives
+- Understand how to connect your data, wherever it lives, using data sources and Private Data Source connect
 
 Click **Next** to continue to the next module.
