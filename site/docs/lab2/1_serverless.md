@@ -60,9 +60,11 @@ Let's use Grafana Cloud Application Observability to get the current health of o
     
     Whether your services are running on EKS, ECS Fargate, or Lambda, you can see the overall health of your services at a glance in the service inventory.
 
+    **Notice that** some of our services are showing an elevated error rate (denoted by the peaks in the sparkline in the Errors column).
+
     ![image](./img/app_o11y.png)
 
-1.  Let's get the big picture to understand how everything is connected. Click on the **Service Map** tab, to show the graph of interconnected services.
+1.  Let's get the big picture, to understand how everything is connected. Click on the **Service Map** tab, to show the graph of interconnected services.
 
     Notice that _tickets-server_ seems to be experiencing an elevated error rate, as it is surrounded by a red circle.
 
@@ -114,7 +116,7 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     By **Group By**, click on **aws.ecs.task.family** to see traces grouped by ECS Fargate task.
 
-1.  By **tickets-server**, click on Add to filters.
+1.  By **tickets-server**, click on **Add to filters**.
 
     This will filter the traces to only show those where the trace began in the tickets-server service.
 
@@ -125,11 +127,11 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
 1.  Click on the **Errored traces** tab to show a list of errored traces.
 
-1.  Click on one of the traces to see the details.
+1.  **Click on one of the traces** to see the details. Then expand the trace sections to see the full request flow. It may look something like:
 
-    Expand trace sections to see the full request flow:
+    tickets-server -> request handler -> pg-pool.connect -> pg.connect
 
-       tickets-server -> request handler -> pg-pool.connect -> pg.connect
+    This shows us deep contextual information about requests coming in to our application deployed on ECS.
 
     ![image](./img/drilldowntraces_error_trace.png)
     
@@ -137,17 +139,21 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     > remaining connection slots are reserved for non-replication superuser and rds_reserved connections
 
-    This is a clue that the problem might be with the database connection, which is causing the service to fail.
+    Or, you might also see:
+
+    > timeout exceeded when trying to connect
+
+    This gives us a strong clue that the problem might be with the database connection, which is causing the service to fail.
 
     :::opentelemetry-tip
 
-    Notice that OpenTelemetry also provides rich contextual data about this database interaction:
+    Notice that OpenTelemetry also automatically extracts rich contextual data about this database interaction:
 
     - db.connection_string: `postgresql://tickets-database-fefd55.cfcmk82ycrhh.us-east-1.rds.amazonaws.com:5432/ticketsdb`
     - db.system: `postgres`
     - net.peer.name: `tickets-database-fefd55.cfcmk82ycrhh.us-east-1.rds.amazonaws.com`
 
-    This kind of rich contextual information comes from adding OpenTelemetry instrumentation to your applications.
+    This kind of contextual information comes from adding OpenTelemetry instrumentation to your applications.
 
     :::
 
@@ -159,7 +165,9 @@ From the information in the traces, we suspect it's a database issue, so let's c
 
 :::info[How it works]
 
-We have configured a Firehose delivery stream to ship RDS logs to Grafana Cloud, so we can view the logs right here in the AWS Observability app.
+In this environment, we have configured a Firehose delivery stream to ship RDS logs to Grafana Cloud, so we can view the logs right here in the AWS Observability app.
+
+[See how to stream logs from AWS to Grafana Cloud using Firehose](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/monitor-cloud-provider/aws/logs/firehose-logs/).
 
 :::
 
@@ -167,9 +175,9 @@ We have configured a Firehose delivery stream to ship RDS logs to Grafana Cloud,
 
     The Logs tab shows us all of the CloudWatch log groups that we're pulling in to our Grafana Cloud account.
 
-1.  Ensure that the datasource selected is **grafanacloud-xxxx-logs** at the top right of the Logs view.
+1.  Ensure that the datasource dropdown (at the top right) has **grafanacloud-xxxx-logs** selected.
 
-1.  Click on the log group **/aws/rds/instance/tickets-database/postgresql**
+1.  Click on the log group **/aws/rds/instance/tickets-database-xxxxx/postgresql**
 
     Notice how we see a lot of FATAL and PANIC error messages:
 
@@ -187,48 +195,40 @@ We have configured a Firehose delivery stream to ship RDS logs to Grafana Cloud,
 
     What would your diagnosis be?
 
-1.  Finally, click on **Open in Explore** to open the same query in Grafana's Explore view.
+1.  Finally, click on **Open in Explore** button, to open the same logs query in Grafana's classic Explore view.
 
 
 ## Step 6: Correlate error logs with metrics
 
-Since we're also bringing in RDS metrics into Grafana Cloud, we can instantly correlate the errors we're seeing in the RDS logs with the health and performance metrics of the database.
+Since we're also bringing in RDS metrics into Grafana Cloud, we can instantly correlate the errors we're seeing in the RDS logs with the health and performance metrics of the database. The metrics should give us an idea of how the database responded to these events.
 
-The metrics should give us an idea of how the database responded to these events.
-
-1.  Update the query to this:
-
-    ```
-    |~ "(PANIC|FATAL|SIGKILL)"
-    ```
-
-1.  While still in the Explore view, click on the **Split** button in the toolbar at the top right.
+1.  In the Explore view, click on the **Split** button in the toolbar at the top right.
 
     _Split view_ allows us to correlate two signals, side-by-side, for easier analysis and understanding.
 
-1.  Using the data source picker at the top, select the **Prometheus** data source.
+1.  Using the data source picker at the top, select the **grafanacloud-xxxxx-prom** data source.
 
-1.  Click on the **Metrics browser** button and start typing `aws_rds_`.
+1.  Click on the **Metrics browser** button, and in the **Select a metric** box, start typing `aws_rds_`.
 
     You'll see the box populate with all of the RDS CloudWatch metrics that we can now query as Prometheus metrics.
 
-    :::tip
+    :::aws-tip
 
     Grafana Cloud's CloudWatch integration scrapes your CloudWatch metrics into Prometheus format, adding the appropriate namespace (`aws_rds_`, `aws_ec2`, etc) to your metrics, so you can see them all here.
 
     :::
 
-1.  Using the metrics browser, select the metric **aws_rds_database_connections_sum**, then click on **dimension_DBInstanceIdentifier** to filter to a specific database, and pick **tickets-database**.
+1.  Using the metrics browser, select the metric **aws_rds_database_connections_sum**, then click on **dimension_DBInstanceIdentifier** to filter to a specific database, and pick **tickets-database-xxxxx** (where "xxxx" is the same ID as in your Grafana instance URL)
 
     Finally, click **Use query**.
 
-    OR, you can enter this query directly in the query box:
+    OR, you can enter this query directly in the query box, making sure to update "xxxxx" with the ID in your Grafana instance URL:
 
     ```
-    aws_rds_database_connections_sum{dimension_DBInstanceIdentifier="tickets-database"}
+    aws_rds_database_connections_sum{dimension_DBInstanceIdentifier="tickets-database-xxxxx"}
     ```
 
-Wow. We can see that the number of database connections shot up.
+Wow. We can see that the number of database connections has shot up!
 
 We have just correlated RDS logs with metrics, in a single view in Grafana. 
 
@@ -257,12 +257,10 @@ The next step would be to:
 
 In this lab, you learned how to:
 
-- Detect SLO violations and track error budget burn using Grafana SLO management
+- Use Grafana SLO to detect violations and track error budget burn
 
-- Use Application Observability with OpenTelemetry resource attributes to isolate issues by AWS region and service type
+- Use Application Observability and OpenTelemetry resource attributes to isolate issues by AWS region or service
 
-- Analyze distributed traces spanning AWS Lambda functions and ECS Fargate containers
-
-- Implement proactive monitoring and incident response workflows for serverless applications
+- Use Drilldown Traces to analyze distributed traces spanning across AWS Lambda functions and ECS Fargate containers
 
 Click **Next** to continue to the next module.
