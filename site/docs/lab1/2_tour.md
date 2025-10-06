@@ -64,11 +64,11 @@ First we'll take a look at how it's configured, then we will look at the built-i
 
     - The scrape job fetches CloudWatch metrics from AWS and brings them into your Grafana instance.
 
-1.  Return back to the Cloud Provider -> AWS screen. Click on **AWS/RDS** to show the RDS dashboard.
+1.  Return back to the Cloud Provider -> AWS screen. Click on **AWS/EC2** to show the EC2 dashboard.
 
-    - Scroll down to see the database instances in this AWS Account, CPU utilization and other statistics. 
+    - See the EC2 instances in this AWS Account, at a glance.
 
-    - Click on a database instance to see its metrics.
+    - Click on an EC2 instance to see its metrics.
 
 1.  Finally, return back to the Cloud Provider -> AWS screen, and click on the **Alerts** tab. These pre-installed, opinionated alerts help you understand when things are going wrong in your infrastructure. 
 
