@@ -47,17 +47,17 @@ Let's take a look at some metrics from our AWS services. **Drilldown Metrics** i
 
     These labels allow us to narrow down our search to view metrics from only a specific group or subset of instances.
 
-1.  By **dimension_ServiceName**, click on **Select** to show the metric broken down by each ECS service.
+1.  By **dimension_InstanceName**, click on **Select** to show the metric broken down by each ECS instance.
 
-    This will show the average CPU utilization, for each of our ECS services:
+    This will show the average CPU utilization, for each of our ECS instances:
 
     ![image](./img/ecs_cpu_breakdown.png)
 
 :::aws-tip[Labels or dimensions?]
-_Dimensions_ (like ServiceName, ClusterName) in AWS CloudWatch become _labels_ in Prometheus/Grafana. Both serve the same purpose - they let you filter and group your metrics by different attributes. Think like: CloudWatch's "Group by" functionality, but with more flexibility for creating custom queries.
+_Dimensions_ (like InstanceName, ServiceName, ClusterName) in AWS CloudWatch become _labels_ in Prometheus/Grafana. Both serve the same purpose - they let you filter and group your metrics by different attributes. Think like: CloudWatch's "Group by" functionality, but with more flexibility for creating custom queries.
 :::
 
-Now we can instantly see CPU utilization for all of our ECS services, broken down by each service. This lets us immediately see which services are perhaps over, or under utilized.
+Now we can instantly see CPU utilization for all of our ECS instances, broken down by each isntance. This lets us immediately see which instances are perhaps over, or under utilized.
 
 
 ## Step 2: Explore Loki logs
