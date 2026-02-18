@@ -175,7 +175,7 @@ In this environment, we have configured a Firehose delivery stream to ship RDS l
 
     The Logs tab shows us all of the CloudWatch log groups that we're pulling in to our Grafana Cloud account.
 
-1.  Ensure that the datasource dropdown (at the top right) has **grafanacloud-xxxx-logs** selected.
+1.  Ensure that the datasource dropdown (at the top right) has **grafanacloud-xxxxx-logs** selected.
 
 1.  Click on the log group **/aws/rds/instance/tickets-database-xxxxx/postgresql**
 
@@ -218,7 +218,7 @@ Since we're also bringing in RDS metrics into Grafana Cloud, we can instantly co
 
     :::
 
-1.  Using the metrics browser, select the metric **aws_rds_database_connections_sum**, then click on **dimension_DBInstanceIdentifier** to filter to a specific database, and pick **tickets-database-xxxxx** (where "xxxx" is the same ID as in your Grafana instance URL)
+1.  Using the metrics browser, select the metric **aws_rds_database_connections_sum**, then click on **dimension_DBInstanceIdentifier** to filter to a specific database, and pick **tickets-database-xxxxx** (where "xxxxx" is the same ID as in your Grafana instance URL)
 
     Finally, click **Use query**.
 

@@ -89,7 +89,7 @@ Now that we have the Service Map and trace metrics, let's add some Lambda execut
 
 1.  Navigate to **Cloud Provider -> AWS -> Lambda**.
 
-1.  In the dropdown variables at the top, by **Function name**, select **tickets-recorder-xxxx** where "xxxx" is your workshop's ID (usually contained in your current Grafana URL).
+1.  In the dropdown variables at the top, by **Function name**, select **tickets-recorder-xxxxx** where "xxxxx" is your workshop's ID (usually contained in your current Grafana URL).
 
 1.  Find the **Errors** panel and click on the **Explore** button in the top right corner.
 
@@ -190,7 +190,7 @@ Finally, let's add a logs panel from all of our services, so we can see the late
 
 1.  Choose the **Logs** visualization type.
 
-1.  In the data source query tab, set the data source to **grafanacloud-xxxx-logs** (Loki) and enter this query:
+1.  In the data source query tab, set the data source to **grafanacloud-xxxxx-logs** (Loki) and enter this query:
 
     ```
     {service_name="tickets-server"}

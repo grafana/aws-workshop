@@ -25,7 +25,7 @@ For this workshop, **you'll need to bring**:
 The **workshop facilitator will provide** you with the following:
 
 - A personal logon (username and password)
-- A URL to a Grafana Cloud instance - e.g. `https://nnnnnn.grafana.net`
+- A URL to a Grafana Cloud instance - e.g. `https://xxxxx.grafana.net`
 
 :::info
 Your logon has been sent to the email address you provided when you signed up. If you haven't received the email, please check your Spam or Junk Mail folder. Or, speak to your facilitator.
