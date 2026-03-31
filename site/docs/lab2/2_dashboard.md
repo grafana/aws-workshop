@@ -23,7 +23,7 @@ The dashboard we will create will look something like this:
 
 ## Step 1: Create a new dashboard
 
-1.  Click on **New -> Dashboard**.
+1.  Click on **New -> New Dashboard**.
 
 1.  Save your dashboard in a folder with your name, so you can find it later.
 
@@ -38,7 +38,7 @@ Let's add the Service Map, since it gives a high-level overview of the services 
 
 1.  Click on the **Explore** button in the top right corner of the Service Map.
 
-1.  In the Explore view, click on the **Add to dashboard** button in the top right corner.
+1.  In the Explore view, click on **Add -> Add to dashboard** in the top right corner.
 
 1.  Click **Existing dashboard**, find or your new dashboard in the list or use the search box, and click **Open dashboard**.
 
@@ -60,6 +60,10 @@ Let's add the Service Map, since it gives a high-level overview of the services 
 1.  Once it's been added to your dashboard, click on the context menu in the top right of the panel, choose **Edit** and set the following properties:
 
     - Panel Title: **Service Errors**
+    - Graph styles -> Line width: **2**
+    - Graph styles -> Fill opacity: **15**
+    - Graph styles -> Gradient mode: **Opacity**
+    - Standard options -> Color scheme: **Single color**, then select **Red**
 
 1.  Finally, remove the second query from this panel by clicking on its trash icon.
 
@@ -89,7 +93,7 @@ Now that we have the Service Map and trace metrics, let's add some Lambda execut
 
 1.  Navigate to **Cloud Provider -> AWS -> Lambda**.
 
-1.  In the dropdown variables at the top, by **Function name**, select **tickets-recorder-xxxx** where "xxxx" is your workshop's ID (usually contained in your current Grafana URL).
+1.  In the dropdown variables at the top, by **Function name**, select **tickets-recorder-xxxxx** where "xxxxx" is your workshop's ID (usually contained in your current Grafana URL).
 
 1.  Find the **Errors** panel and click on the **Explore** button in the top right corner.
 
@@ -190,11 +194,15 @@ Finally, let's add a logs panel from all of our services, so we can see the late
 
 1.  Choose the **Logs** visualization type.
 
-1.  In the data source query tab, set the data source to **grafanacloud-xxxx-logs** (Loki) and enter this query:
+1.  In the data source query tab, set the data source to **grafanacloud-xxxxx-logs** (Loki) and enter this query:
 
     ```
     {service_name="tickets-server"}
     ```
+
+1. Edit the following panel settings:
+
+    - Standard options -> Display name: **Most recent logs**
 
 ## Step 8: Add a database records stat
 
@@ -212,6 +220,7 @@ Since we have access to our database instance here, let's also show a stat of th
 
 1.  Edit the following panel settings:
 
+    - Leave the Title blank
     - Standard options -> Display name: **orders in database**
     - Standard options -> Color scheme: **single color**, then choose **orange**
 

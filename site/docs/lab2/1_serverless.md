@@ -79,7 +79,7 @@ Let's use Grafana Cloud Application Observability to get the current health of o
 
     - Look at the Operations panel, which shows us the operations being invoked on this service's API. 
 
-    ![image](./img/app_o11y_mythicalserver.png)
+    ![image](./img/app_o11y_tickets_server.png)
 
 1.  Click on the **Cloud** dropdown button at the top right of the screen.
 
@@ -110,11 +110,11 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
 1.  From the Drilldown Traces home page, click on **Errors rate** at the top to change the view to show traces which have errors.
 
-1.  In the Group By section, we can group traces by service, operation, or any other attribute that we have defined in our OpenTelemetry instrumentation.
+1.  In the Attributes section, we can group traces by service, operation, or any other attribute that we have defined in our OpenTelemetry instrumentation.
 
     The default grouping is _service.name_. But we can also group by _cloud.region_ to see traces grouped by AWS region, or _aws.ecs.task.family_ to see traces grouped by ECS Fargate task.
 
-    By **Group By**, click on **aws.ecs.task.family** to see traces grouped by ECS Fargate task.
+    Under **Attributes**, click on the **Resource** tab and select **aws.ecs.task.family**.
 
 1.  By **tickets-server**, click on **Add to filters**.
 
@@ -143,15 +143,19 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     > timeout exceeded when trying to connect
 
+    Or,
+
+    > Connection terminated unexpectedly
+
     This gives us a strong clue that the problem might be with the database connection, which is causing the service to fail.
 
     :::opentelemetry-tip
 
     Notice that OpenTelemetry also automatically extracts rich contextual data about this database interaction:
 
-    - db.connection_string: `postgresql://tickets-database-fefd55.cfcmk82ycrhh.us-east-1.rds.amazonaws.com:5432/ticketsdb`
-    - db.system: `postgres`
-    - net.peer.name: `tickets-database-fefd55.cfcmk82ycrhh.us-east-1.rds.amazonaws.com`
+    - db.connection_string: `postgresql://tickets-database-bacf71.cfcmk82ycrhh.us-east-1.rds.amazonaws.com:5432/ticketsdb`
+    - db.system: `postgresql`
+    - net.peer.name: `tickets-database-bacf71.cfcmk82ycrhh.us-east-1.rds.amazonaws.com`
 
     This kind of contextual information comes from adding OpenTelemetry instrumentation to your applications.
 
@@ -175,7 +179,7 @@ In this environment, we have configured a Firehose delivery stream to ship RDS l
 
     The Logs tab shows us all of the CloudWatch log groups that we're pulling in to our Grafana Cloud account.
 
-1.  Ensure that the datasource dropdown (at the top right) has **grafanacloud-xxxx-logs** selected.
+1.  Ensure that the datasource dropdown (at the top right) has **grafanacloud-xxxxx-logs** selected.
 
 1.  Click on the log group **/aws/rds/instance/tickets-database-xxxxx/postgresql**
 
@@ -218,7 +222,7 @@ Since we're also bringing in RDS metrics into Grafana Cloud, we can instantly co
 
     :::
 
-1.  Using the metrics browser, select the metric **aws_rds_database_connections_sum**, then click on **dimension_DBInstanceIdentifier** to filter to a specific database, and pick **tickets-database-xxxxx** (where "xxxx" is the same ID as in your Grafana instance URL)
+1.  Using the metrics browser, select the metric **aws_rds_database_connections_sum**, then click on **dimension_DBInstanceIdentifier** to filter to a specific database, and pick **tickets-database-xxxxx** (where "xxxxx" is the same ID as in your Grafana instance URL)
 
     Finally, click **Use query**.
 
