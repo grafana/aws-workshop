@@ -114,7 +114,7 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     The default grouping is _service.name_. But we can also group by _cloud.region_ to see traces grouped by AWS region, or _aws.ecs.task.family_ to see traces grouped by ECS Fargate task.
 
-    By **Group By**, click on **aws.ecs.task.family** to see traces grouped by ECS Fargate task.
+    Under **Attributes**, click on the **Resource** tab and select **aws.ecs.task.family**.
 
 1.  By **tickets-server**, click on **Add to filters**.
 
