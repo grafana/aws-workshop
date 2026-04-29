@@ -160,6 +160,53 @@ Let's test this out by connecting to our application's RDS database.
 1.  We have a successful connection to our RDS instance! We can now use this to correlate real data in Grafana.
 
 
+## Step 5: Explore with Grafana Assistant
+
+You've just navigated the Grafana Cloud UI manually - finding services, clicking through dashboards, and writing SQL queries by hand. Now let's see how **Grafana Assistant** can do the same things using natural language.
+
+Grafana Assistant is a conversational AI built into Grafana Cloud that can query your data sources, create dashboards, and explain your environment - all without requiring you to know PromQL, LogQL, or SQL.
+
+1.  Open **Grafana Assistant** by clicking on the Assistant icon in the top navigation bar.
+
+    <!-- TODO: Screenshot of Assistant icon location in top nav -->
+
+1.  Let's start with something we did manually in Step 2. Type the following prompt:
+
+    ```
+    What data sources are connected and what dashboards exist for production?
+    ```
+
+    Assistant will identify your connected data sources and existing dashboards - the same information you found by manually navigating through **Observability -> Cloud Provider -> AWS** and **Connections -> Data sources**.
+
+    <!-- TODO: Screenshot of Assistant response showing data sources and dashboards -->
+
+1.  Now let's replace the SQL query from Step 4. Instead of writing `SELECT COUNT(*) FROM booking;`, ask:
+
+    ```
+    How many bookings are in the database?
+    ```
+
+    Assistant queries the tickets-db data source and returns the result - no SQL required.
+
+    <!-- TODO: Screenshot of Assistant returning booking count -->
+
+1.  Try one more. Ask Assistant to explain what you're looking at:
+
+    ```
+    What services are running in this environment and what AWS infrastructure are they using?
+    ```
+
+    Compare this to the manual exploration you did in Steps 1-3, clicking through Application Observability, the AWS integration, and Drilldown Traces.
+
+    <!-- TODO: Screenshot of Assistant environment summary -->
+
+:::tip[What just happened?]
+
+In Steps 1-4, you navigated multiple Grafana Cloud features to understand your environment. With Assistant, you got similar answers from natural language prompts. The manual steps taught you where things live in Grafana - Assistant lets you skip the navigation once you know what to ask.
+
+:::
+
+
 ## Wrapping Up
 
 In this lab, you learned how to:
@@ -169,5 +216,7 @@ In this lab, you learned how to:
 - Understand Application Observability 
 
 - Understand how to connect your data, wherever it lives, using data sources and Private Data Source connect
+
+- Use Grafana Assistant to explore your environment with natural language
 
 Click **Next** to continue to the next module.

@@ -256,4 +256,3 @@ In this lab, you created a custom dashboard in Grafana Cloud that brings togethe
 - Use annotations to correlate events in your infrastructure with SLO events, helping you to understand the impact of those events on your services
 
 - Use the Service Map to visualize the relationships between your services and their dependencies
-

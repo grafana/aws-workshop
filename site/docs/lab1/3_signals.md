@@ -159,6 +159,75 @@ To perform side-by-side correlations, we can use the **Explore** view in Grafana
 4.  Now we can see exactly what happened during this interaction.
 
 
+## Step 5: Query signals with Grafana Assistant
+
+You've just explored metrics, logs, and traces by navigating Drilldown apps, selecting labels, and writing LogQL queries. Now let's see how Grafana Assistant can generate and run those same queries from just a prompt.
+
+### Metrics
+
+1.  Open **Grafana Assistant** and type:
+
+    ```
+    Show me average CPU utilization across ECS services
+    ```
+
+    Compare the result to what you found in Step 1 by manually navigating to `aws_ecs_cpuutilization_average` and breaking down by `dimension_ServiceName`.
+
+    Notice that Assistant generates the PromQL query for you — you didn't need to know the metric name or label structure.
+
+    <!-- TODO: Screenshot of Assistant returning ECS CPU utilization broken down by service -->
+
+### Logs
+
+2.  Now ask:
+
+    ```
+    Show me error logs from the tickets-requester service
+    ```
+
+    This is the same result you got in Step 2 by navigating Drilldown Logs, selecting tickets-requester, and filtering by "error" — but in one prompt.
+
+    <!-- TODO: Screenshot of Assistant returning filtered error logs -->
+
+3.  Try a follow-up that would have required multiple clicks manually:
+
+    ```
+    Which container instance has the most errors?
+    ```
+
+    <!-- TODO: Screenshot of Assistant aggregating errors by container -->
+
+### Traces
+
+4.  Ask:
+
+    ```
+    Show me the slowest traces from ECS tasks in the last hour
+    ```
+
+    Compare to Step 3, where you manually filtered by `resource.cloud.platform = aws_ecs` and clicked through the duration histogram to find slow traces.
+
+    <!-- TODO: Screenshot of Assistant returning slow ECS traces -->
+
+### Correlation
+
+5.  Finally, let's replicate the log-to-trace correlation from Step 4. Instead of opening Explore, selecting Loki, running a query, expanding a log line, and clicking the traceID — just ask:
+
+    ```
+    Correlate error logs from tickets-requester with their traces
+    ```
+
+    What took four manual steps becomes one prompt.
+
+    <!-- TODO: Screenshot of Assistant correlating logs and traces -->
+
+:::tip[You don't need PromQL on day one]
+
+The manual exploration in Steps 1-4 taught you how signals are structured — metric names, labels, log streams, trace attributes. That understanding is valuable. But with Assistant, new engineers can start getting answers immediately while they're still learning the query languages.
+
+:::
+
+
 ## Wrapping Up
 
 In this lab, you learned:
@@ -168,6 +237,8 @@ In this lab, you learned:
 - The strengths and use cases for each data type
 
 - How to correlate between different signals for faster troubleshooting
+
+- How Grafana Assistant can generate queries from natural language, without requiring PromQL or LogQL expertise
 
 Now you're ready to dive into a typical AWS troubleshooting scenario with Grafana Cloud.
 
