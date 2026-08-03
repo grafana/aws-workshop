@@ -39,7 +39,7 @@ Let's take a look at our applications in this environment:
 
     The **P95** latency is shown in the top right corner, which means that 95% of requests are served within this time. This is a key metric for understanding the performance of your service. 
 
-1.  By **Group by**, click on **cloud.availability_zone**. Now we can see the distribution of our requests across each AWS availability zone.
+1.  By **Group by**, which is immediately below the Overview tab, click on **cloud.availability_zone**. Now we can see the distribution of our requests across each AWS availability zone.
 
     This could help us to troubleshoot problems in a particular AWS availability zone, for example.
 
@@ -111,7 +111,7 @@ So let's explore some telemetry signals! We've already configured some of our ap
 
 1.  This view is showing all of our instrumented services. Let's zoom in a little and just find all **ECS** services.
 
-    Using the filter panel (_"Filter by label values"_) at the top of the page, add a filter:
+    Using the filter panel (_"+ label = value"_) at the top of the page, add a filter:
 
     **resource.cloud.platform** = **aws_ecs**
 
@@ -147,11 +147,11 @@ Let's test this out by connecting to our application's RDS database.
 
     :::
 
-1.  Now let's run a database query on our RDS database instance. From the top of the data source edit page, click on the **Explore data** button. 
+1.  Now let's run a database query on our RDS database instance. From the top right of the data source edit page, click on the **Explore data** button. 
 
     OR, from the side menu navigate to **Explore** and then select the **tickets-db** data source.
 
-1.  Switch to **Code** view, then type the following SQL statement:
+1.  At the top right, switch to **Code** view, then type the following SQL statement:
 
     ```
     SELECT COUNT(*) FROM booking;
