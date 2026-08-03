@@ -13,7 +13,7 @@ Let's make sure you're all set up.
 
 Prefer reading in light mode, or dark mode? You can pick either.
 
-Toggle to your preferred color mode by clicking on the Light icon in the top right corner ⮥
+Toggle to your preferred color mode by clicking on the icon in the top right corner. Select Profile and then change the interface theme (e.g., to "Light") as desired.
 
 ## What you'll need
 
