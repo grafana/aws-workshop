@@ -11,11 +11,11 @@ In this lab, you will learn how to analyze costs and resource utilization using 
 
 ## Step 1: Understand your resource utilization
 
-1.  From the side menu, navigate to **Observability -> AWS**. Then, click on the **AWS/Billing** dashboard.
+1.  From the side menu, navigate to **Observability -> Cloud Provider -> AWS**. Then, click on the **AWS Billing** dashboard.
 
     Notice how we can see the costs associated with our AWS account, including the total cost, and cost by service.
 
-1.  Go back to the AWS Observability home page and click on **AWS/EC2**. Then click on the **Rightsizing** tab to view a dashboard showing instances sorted by:
+1.  Go back to the AWS Observability home page and click on **AWS EC2**. Then click on the **Rightsizing** tab to view a dashboard showing instances sorted by:
 
     - disk write bytes
     - disk read bytes
@@ -26,6 +26,7 @@ In this lab, you will learn how to analyze costs and resource utilization using 
 
 <Question id={'cost_initialdecision'} title={'Would you resize the EC2 instance based on this stat alone? Why or why not?'}></Question>
 
+Grafana Assistant can help here too. Ask it the question: "How can I save on AWS EC2 costs?" Then feel free to continue with the steps below.
 
 ## Step 2: Gather node information
 
