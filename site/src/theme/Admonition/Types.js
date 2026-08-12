@@ -30,6 +30,20 @@ function AwsTipAdmonition(props) {
   );
 }
 
+function AssistantAdmonition(props) {
+  return (
+    <div className={'admonition-otel'}>
+      <div className={'icon-container'}>
+        <img src={useBaseUrl('/img/assistant.svg')} alt="Grafana Assistant" />
+        </div>
+      <div>
+        <div className={'heading'}>{props.title}</div>
+        <div className={'content'}>{props.children}</div>
+      </div>
+    </div>
+  );
+}
+
 const AdmonitionTypes = {
   ...DefaultAdmonitionTypes,
 
@@ -37,6 +51,7 @@ const AdmonitionTypes = {
   // You can also override the default ones if you want
   'opentelemetry-tip': OpenTelemetryTipAdmonition,
   'aws-tip': AwsTipAdmonition,
+  'assistant-tip': AssistantAdmonition,
 };
 
 export default AdmonitionTypes;

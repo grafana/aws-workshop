@@ -79,7 +79,7 @@ const config = {
           editUrl:
             'https://github.com/grafana/aws-workshop/tree/main/site/',
           admonitions: {
-            keywords: ['opentelemetry-tip', 'aws-tip'],
+            keywords: ['opentelemetry-tip', 'aws-tip', 'assistant-tip'],
             extendDefaults: true,
           }
         },
