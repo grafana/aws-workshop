@@ -21,26 +21,44 @@ The dashboard we will create will look something like this:
 
     ![Completed dashboard](./img/dashboard_finished.png)
 
-## Step 1: Create a new dashboard using Grafana Assistant
+## Create a dashboard with Grafana Assistant
 
-Let's start by seeing how Grafana Assistant can make dashboard creation super easy. Start the Grafana Assistant using the button at the top right with 2 stars. 
+Let's start by seeing how Grafana Assistant can make dashboard creation super easy. 
 
-Enter the prompt: "Create a new dashboard called {your name} with 4 panels: a Tempo service map for production traffic, a timeseries of error rate and request rate for the tickets/tickets-server job (production), and a timeseries of Lambda error rate for **tickets-recorder-xxxxx**"
+1.  Open Grafana Assistant using the button at the top right with 2 stars.
 
-"xxxxx" is your workshop's ID (usually contained in your current Grafana URL).
+1.  Enter the following prompt:
 
-Once the dashboard is built, feel free to skim steps 2-5 and then continue with Step 6. You can continue to use Grafana Assistant to refine your dashboard (e.g., add content, modify look-and-feel) or you can try some steps manually if you prefer.
+    ```assistant title="Suggested prompt"
+    Create a new dashboard called (your name) with 4 panels: a Tempo service map for production traffic, a timeseries of error rate and request rate for the tickets/tickets-server job (production), and a timeseries of Lambda error rate for tickets-recorder-xxxxx
+    ```
 
-The bottom line is that Grafana Assistant makes dashboard creation simple, with no need to be an expert at query languages such as PromQL. Of course, you do need to make
-sure that the output is accurate, just as you would for any development process.
+    Where:
+    - **(your name)** is your first name, or a name that will identify your dashboard in this shared environment.
+    - **"xxxxxx"** is your workshop's ID (usually contained in your current Grafana URL).
+    
+1.  Once the dashboard is built, jump straight to [Continue building the dashboard](#continue-building-the-dashboard) below. 
 
-## Step 2: Create a new dashboard manually
+    You can keep using Grafana Assistant to refine your dashboard (for example, to add content or change the look and feel), or build the same panels by hand using the steps below if you'd rather do that.
+
+:::assistant-tip[No PromQL required!]
+
+Grafana Assistant makes dashboard creation simple. There's no need to be an expert at query languages such as PromQL. Of course, you should verify that the Assistant's output is accurate, just as you would for any development process.
+
+:::
+
+## Create a dashboard manually
+
+<details>
+<summary>Optional: skip this if you already built your dashboard with Grafana Assistant above</summary>
+
+### Create a new dashboard
 
 1.  Click on **New -> New Dashboard**.
 
 1.  Save your dashboard in a folder with your name, so you can find it later.
 
-## Step 3: Add the Service Map
+### Add the Service Map
 
 Let's add the Service Map, since it gives a high-level overview of the services in our application and their relationships.
 
@@ -60,7 +78,7 @@ Let's add the Service Map, since it gives a high-level overview of the services 
 
 1.  Click **Save dashboard** in the top right then click **Back to dashboard**.
 
-## Step 4: Show error rates from traces
+### Show error rates from traces
 
 1.  Navigate to **Observability -> Application**.
 
@@ -80,7 +98,7 @@ Let's add the Service Map, since it gives a high-level overview of the services 
 
 1.  Save and return to the dashboard.
 
-### Show request rate
+#### Show request rate
 
 Repeat the same process as above, but add a panel showing request rate.
 
@@ -97,7 +115,7 @@ Repeat the same process as above, but add a panel showing request rate.
     - Standard options -> Unit: **Throughput -> requests/sec (rps)**
     - Standard options -> Color scheme: **Single color**, then select **Blue**
 
-## Step 5: Add Lambda execution and SQS metrics
+### Add Lambda execution and SQS metrics
 
 Now that we have the Service Map and trace metrics, let's add some Lambda execution metrics to our dashboard.
 
@@ -130,7 +148,13 @@ Let's add the total number of SQS messages. This could give us a clue whether me
 
 1.  Edit the panel, and give it the title **SQS Messages**.
 
-## Step 6: Show RDS fatal errors on a graph
+</details>
+
+## Continue building the dashboard
+
+Whichever way you built your dashboard above, the rest of the steps are the same.
+
+### Show RDS fatal errors on a graph
 
 In the previous hands-on lab, we saw how a pile-up of errors in our tickets-server service was causing the SLO to breach. We saw that the root cause was that the RDS instance was overloaded with connections, causing the tickets-server-service to be degraded.
 
@@ -158,7 +182,7 @@ In Grafana Loki, you can turn any set of log results into an instant metric. Met
 
 1.  Save and return back to the dashboard.
 
-## Step 7: Add SLO event annotations
+### Add SLO event annotations
 
 Annotations are a great way to add context to your dashboards. Annotations mark specific points in time on your graphs, which can help shine a light on events that may have affected your services, or indeed show if problems in your services have affected anything else.
 
@@ -195,7 +219,7 @@ In this case, we'll use annotations to mark when our SLO began to breach, and co
 
     :::
 
-## Step 8: Add a logs panel
+### Add a logs panel
 
 Finally, let's add a logs panel from all of our services, so we can see the latest entries.
 
@@ -213,7 +237,7 @@ Finally, let's add a logs panel from all of our services, so we can see the late
 
     - Standard options -> Display name: **Most recent logs**
 
-## Step 9: Add a database records stat
+### Add a database records stat
 
 Since we have access to our database instance here, let's also show a stat of the number of orders being held in the bookings database.
 
@@ -233,7 +257,7 @@ Since we have access to our database instance here, let's also show a stat of th
     - Standard options -> Display name: **orders in database**
     - Standard options -> Color scheme: **single color**, then choose **orange**
 
-## Step 10: Bonus tasks!
+### Bonus tasks!
 
 The dashboard you have created is a good starting point, but you can customize it further to suit your needs. 
 
