@@ -257,6 +257,76 @@ The next step would be to:
 - Update configuration or resize the database instance where necessary
 
 
+## Step 8: Replay the investigation with Grafana Assistant
+
+You just completed a 7-step manual investigation — from SLO alert to root cause diagnosis. That process took around 15-20 minutes, and required navigating SLO dashboards, Application Observability, Drilldown Traces, RDS logs, and Prometheus metrics.
+
+Now let's see what happens when you hand the same problem to Grafana Assistant.
+
+1.  Open **Grafana Assistant** and type:
+
+    ```
+    The tickets-server is returning elevated 500 errors and our SLO is breaching. Find the root cause.
+    ```
+
+    Assistant will launch a multi-agent investigation, fanning out across your metrics, logs, and traces to correlate signals — the same workflow you just performed manually.
+
+    <!-- TODO: Screenshot of Assistant investigation in progress (multi-agent view) -->
+
+1.  Watch the investigation unfold. Assistant should:
+
+    - Identify the tickets-server error spike from trace data
+    - Find the database connection errors in error traces
+    - Correlate with RDS fatal error logs ("too many clients already")
+    - Surface the RDS connection count metric spike
+
+    <!-- TODO: Screenshot of Assistant investigation results / summary -->
+
+    :::info[What you should see]
+
+    Assistant's response will vary, but it should arrive at the same conclusion: **the RDS database is experiencing connection exhaustion**, causing the tickets-server to fail. The specific wording and order of findings will differ from run to run — that's normal for AI-powered analysis.
+
+    :::
+
+1.  Now try the investigation in targeted steps, matching each phase of your manual workflow:
+
+    **Triage:**
+    ```
+    What alerts are firing? Show affected services and error rates from the last 30 minutes
+    ```
+
+    <!-- TODO: Screenshot of Assistant triage response -->
+
+    **Drill down:**
+    ```
+    Show me error traces from tickets-server — what's failing and why?
+    ```
+
+    <!-- TODO: Screenshot of Assistant showing error traces and root cause -->
+
+    **Correlate:**
+    ```
+    Show me RDS connection count alongside fatal error logs
+    ```
+
+    This replaces the manual split-view correlation from Step 6 — no need to open Explore, split the view, find the right metric, and line up the time ranges.
+
+    <!-- TODO: Screenshot of Assistant correlating RDS metrics and logs side by side -->
+
+    **Summarize:**
+    ```
+    What happened to tickets-server? Give me a timeline and hypothesis
+    ```
+
+    <!-- TODO: Screenshot of Assistant timeline and hypothesis summary -->
+
+:::tip[The manual steps matter]
+
+Your manual investigation took ~20 minutes. Assistant produced the same diagnosis in under 2 minutes. But the manual steps taught you what's happening under the hood — how traces connect to logs, how metrics confirm a hypothesis. Assistant accelerates the investigation, it doesn't replace the understanding.
+
+:::
+
+
 ## Wrapping Up
 
 In this lab, you learned how to:
@@ -266,5 +336,7 @@ In this lab, you learned how to:
 - Use Application Observability and OpenTelemetry resource attributes to isolate issues by AWS region or service
 
 - Use Drilldown Traces to analyze distributed traces spanning across AWS Lambda functions and ECS Fargate containers
+
+- Use Grafana Assistant to replay an entire investigation from a single prompt, and compare AI-assisted troubleshooting with manual investigation
 
 Click **Next** to continue to the next module.

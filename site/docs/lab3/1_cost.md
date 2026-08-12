@@ -94,15 +94,54 @@ We will use OpenTelemetry resource attributes to search for traces and metrics c
 
 <Question id={'traces_instancetype'} title={'Which OpenTelemetry attribute tells us the machine type of this EC2 instance? Is it large enough for the applications running on it?'}></Question>
 
-## Step 4: Make a decision
+## Step 4: Ask Grafana Assistant for a recommendation
 
-Based on the information gathered in the previous steps, we can make a decision about resizing the EC2 instance.
+You've gathered data from three different sources — billing dashboards, Linux node metrics, and OpenTelemetry traces. Now let's see if Assistant can synthesize all of that into a single recommendation.
+
+1.  Open **Grafana Assistant** and type:
+
+    ```
+    Should I rightsize the EC2 instance running the tickets workload? Check CPU utilization, memory usage, running services, and cost
+    ```
+
+    Assistant will pull together the same signals you investigated manually across Steps 1-3 and provide a recommendation with supporting evidence.
+
+    <!-- TODO: Screenshot of Assistant rightsizing recommendation -->
+
+1.  Try a follow-up to get specific cost numbers:
+
+    ```
+    What is this EC2 instance costing us per month and what would a smaller instance save?
+    ```
+
+    <!-- TODO: Screenshot of Assistant cost comparison -->
+
+    :::info[What you should see]
+
+    Assistant should reference the billing data, CPU/memory utilization, and the services running on the instance. The specific recommendation may vary between runs, but it should weigh all three data sources. If it only references one signal, try a more specific prompt.
+
+    :::
+
+<Question id={'cost_aidecision'} title={'Would you trust this AI recommendation without having done the manual analysis first? Why or why not?'}></Question>
+
+:::tip[Hypothesis, not answer]
+
+Assistant provides a _hypothesis_ grounded in your data — not a final decision. The manual investigation in Steps 1-3 gave you the context to evaluate whether the recommendation makes sense. This is the "hypothesis, not answer" principle: the engineer always validates.
+
+:::
+
+
+## Step 5: Make a decision
+
+Based on the information gathered in the previous steps — and the recommendation from Assistant — we can make a decision about resizing the EC2 instance.
 
 - We saw that Rightsizing dashboard showed that the instance is underutilized, but we wanted to gather more information before making a decision.
 
 - We gathered more information about the node using the Linux Node / fleet overview dashboard, which showed us the CPU and memory usage of the node.
 
 - We analyzed the applications running on the node using OpenTelemetry resource attributes, which showed us the services running on the node and their performance.
+
+- We asked Assistant to synthesize all of this data into a recommendation.
 
 <Question id={'cost_decision'} title={'What is your decision about resizing the EC2 instance? What would you do next?'}></Question>
 
@@ -115,6 +154,8 @@ In this lab, you learned how to:
 - Use OpenTelemetry resource attributes to search for traces and metrics across your infrastructure
 
 - Make informed decisions about resizing EC2 instances based on data
+
+- Use Grafana Assistant to synthesize multiple data sources into a single recommendation
 
 - Understand the importance of cost management in cloud environments
 
