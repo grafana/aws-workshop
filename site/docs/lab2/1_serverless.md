@@ -21,7 +21,7 @@ A Service Level Objective (SLO) defines a specific, measurable target, which rep
 
 :::
 
-1.  From the side menu, navigate to **Alerts & IRM -> SLO -> SLO performance** to show the Grafana SLO performance dashboard.
+1.  From the side menu, navigate to **Alerts & IRM -> SLO -> View SLO performance** to show the Grafana SLO performance dashboard.
 
     This dashboard shows the performance of our Service-Level Objectives. There is **one** SLO configured.
 
@@ -77,7 +77,7 @@ Let's use Grafana Cloud Application Observability to get the current health of o
 
     - Notice first how the typical duration of each request has **shot up** to 4 seconds.
 
-    - Look at the Operations panel, which shows us the operations being invoked on this service's API. 
+    - Scroll down and look at the Operations panel, which shows us the operations being invoked on this service's API. 
 
     ![image](./img/app_o11y_tickets_server.png)
 
@@ -95,8 +95,23 @@ Let's use Grafana Cloud Application Observability to get the current health of o
 
 At this stage, we need more info.
 
+## Step 3: Ask the Grafana Assistant to diagnose the issue
 
-## Step 3: Troubleshoot with OpenTelemetry signals
+In a moment, we will dig into traces, logs and metrics to determine what's going on. Before we do that, though, most of us are now comfortable using AI in our day-to-day.
+
+Let's see how the Grafana Assistant, which is an inline AI capability that understands Grafana really well, can help us.
+
+At the top right of your screen, second from the rightmost button, you'll see a button with 2 stars. Click that button to open the Grafana Assistant.
+
+In the Assistant panel, at the bottom, enter the following prompt:
+
+```assistant title="Suggested prompt"
+Why is there a latency spike on the tickets-server?
+```
+
+The Assistant will start scanning data from Prometheus, Loki, and Tempo to get to the root of the issue. While it does its work, proceed with the next step.
+
+## Step 4: Troubleshoot with OpenTelemetry signals
 
 Now that we can see where the error is happening, and who is affected, let's use the other solutions in Grafana Cloud to figure out what's going on.
 
@@ -108,22 +123,28 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
     We can slice and dice the trace data in hundreds of different ways, making it easy to find the root cause of issues in our application.
 
-1.  From the Drilldown Traces home page, click on **Errors rate** at the top to change the view to show traces which have errors.
+1.  From the Drilldown Traces home page, click on **error/s** at the top right to change the view to show traces which have errors.
 
 1.  In the Attributes section, we can group traces by service, operation, or any other attribute that we have defined in our OpenTelemetry instrumentation.
 
-    The default grouping is _service.name_. But we can also group by _cloud.region_ to see traces grouped by AWS region, or _aws.ecs.task.family_ to see traces grouped by ECS Fargate task.
+    The default grouping is _service.name_, but we can also group by other attributes — for example, _cloud.region_ to see traces grouped by AWS region, or _aws.ecs.task.family_ to see traces grouped by ECS Fargate task.
 
     Under **Attributes**, click on the **Resource** tab and select **aws.ecs.task.family**.
 
-1.  By **tickets-server**, click on **Add to filters**.
+1.  By **tickets-server**, click on **Include**.
 
     This will filter the traces to only show those where the trace began in the tickets-server service.
 
     Now we're zooming in to the problem.
 
+## Step 5: Back to Grafana Assistant
 
-## Step 4: Digging into error traces
+The Grafana Assistant has probably completed (or is close to completing) its investigation. Take a look at its results. It might have identified a traffic spike or
+some sort of database saturation.
+
+Feel free to explore. Ask followup questions. If it mentioned DB saturation, perhaps ask it to "Perform a deeper root cause analysis of the RDS degradation."
+
+## Step 6: Digging into error traces
 
 1.  Click on the **Errored traces** tab to show a list of errored traces.
 
@@ -163,7 +184,7 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
 1.  Notice how many of the spans end at exactly **30 seconds**. Does that seem strange to you?
 
-## Step 5: View managed service logs
+## Step 7: View managed service logs
 
 From the information in the traces, we suspect it's a database issue, so let's check the health of the RDS database itself.
 
@@ -202,17 +223,17 @@ In this environment, we have configured a Firehose delivery stream to ship RDS l
 1.  Finally, click on **Open in Explore** button, to open the same logs query in Grafana's classic Explore view.
 
 
-## Step 6: Correlate error logs with metrics
+## Step 8: Correlate error logs with metrics
 
 Since we're also bringing in RDS metrics into Grafana Cloud, we can instantly correlate the errors we're seeing in the RDS logs with the health and performance metrics of the database. The metrics should give us an idea of how the database responded to these events.
 
-1.  In the Explore view, click on the **Split** button in the toolbar at the top right.
+1.  In the **Explore** click on the **Split** button in the toolbar at the top right.
 
     _Split view_ allows us to correlate two signals, side-by-side, for easier analysis and understanding.
 
 1.  Using the data source picker at the top, select the **grafanacloud-xxxxx-prom** data source.
 
-1.  Click on the **Metrics browser** button, and in the **Select a metric** box, start typing `aws_rds_`.
+1.  Click in the **Select metric** text box and start typing `aws_rds_`.
 
     You'll see the box populate with all of the RDS CloudWatch metrics that we can now query as Prometheus metrics.
 
@@ -222,11 +243,11 @@ Since we're also bringing in RDS metrics into Grafana Cloud, we can instantly co
 
     :::
 
-1.  Using the metrics browser, select the metric **aws_rds_database_connections_sum**, then click on **dimension_DBInstanceIdentifier** to filter to a specific database, and pick **tickets-database-xxxxx** (where "xxxxx" is the same ID as in your Grafana instance URL)
+1.  Using the metrics browser, select the metric **aws_rds_database_connections_sum**, then, under Label filters,  select **dimension_DBInstanceIdentifier** to filter to a specific database and select the value **tickets-database-xxxxx** (where "xxxxx" is the same ID as in your Grafana instance URL)
 
-    Finally, click **Use query**.
+    Finally, click **Run query**.
 
-    OR, you can enter this query directly in the query box, making sure to update "xxxxx" with the ID in your Grafana instance URL:
+    OR, you can enter this query directly in the query box after switching to Code view, making sure to update "xxxxx" with the ID in your Grafana instance URL:
 
     ```
     aws_rds_database_connections_sum{dimension_DBInstanceIdentifier="tickets-database-xxxxx"}
@@ -236,7 +257,7 @@ Wow. We can see that the number of database connections has shot up!
 
 We have just correlated RDS logs with metrics, in a single view in Grafana. 
 
-## Step 7: Check your understanding
+## Step 9: Check your understanding
 
 **From our investigation, it looks like our database might be undersized for our peak sales periods, causing stability issues and connection failures.**
 
@@ -266,5 +287,7 @@ In this lab, you learned how to:
 - Use Application Observability and OpenTelemetry resource attributes to isolate issues by AWS region or service
 
 - Use Drilldown Traces to analyze distributed traces spanning across AWS Lambda functions and ECS Fargate containers
+
+- Use Grafana Assistant to speed up our analysis
 
 Click **Next** to continue to the next module.
