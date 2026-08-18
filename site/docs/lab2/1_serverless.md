@@ -103,7 +103,11 @@ Let's see how the Grafana Assistant, which is an inline AI capability that under
 
 At the top right of your screen, second from the rightmost button, you'll see a button with 2 stars. Click that button to open the Grafana Assistant.
 
-In the Assistant panel, at the bottom, you should be able to prompt the assistant. Enter a prompt such as "Why is there a latency spike on the tickets-server?" and hit enter.
+In the Assistant panel, at the bottom, enter the following prompt:
+
+```assistant title="Suggested prompt"
+Why is there a latency spike on the tickets-server?
+```
 
 The Assistant will start scanning data from Prometheus, Loki, and Tempo to get to the root of the issue. While it does its work, proceed with the next step.
 
@@ -123,7 +127,7 @@ Let's navigate to **Drilldown Traces**, which gives us another way to view our t
 
 1.  In the Attributes section, we can group traces by service, operation, or any other attribute that we have defined in our OpenTelemetry instrumentation.
 
-    The default grouping is _service.name_, but we can also group by other attributes. But we can also group by _cloud.region_ to see traces grouped by AWS region, or _aws.ecs.task.family_ to see traces grouped by ECS Fargate task.
+    The default grouping is _service.name_, but we can also group by other attributes — for example, _cloud.region_ to see traces grouped by AWS region, or _aws.ecs.task.family_ to see traces grouped by ECS Fargate task.
 
     Under **Attributes**, click on the **Resource** tab and select **aws.ecs.task.family**.
 
