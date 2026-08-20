@@ -14,8 +14,8 @@
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.60.1",
-    "@opentelemetry/exporter-metrics-otlp-http": "^0.202.0",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.202.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "^0.221.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.221.0",
     "@opentelemetry/resource-detector-aws": "^2.2.0"
   }
 }
